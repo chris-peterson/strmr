@@ -1,0 +1,1547 @@
+{
+  "publisher": "MapSub",
+  "source": "https://mapsub.com/data/price-history/all.csv",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "prices": [
+    {
+      "service": "Apple TV",
+      "currency": "USD",
+      "amountMinor": 499,
+      "plan": "Apple TV",
+      "cycle": "monthly",
+      "firstSeen": "2019-09-10",
+      "lastSeen": "2022-10-24",
+      "evidenceUrl": "https://web.archive.org/web/20190910185056/https://www.apple.com/apple-tv-plus/"
+    },
+    {
+      "service": "Apple TV",
+      "currency": "USD",
+      "amountMinor": 699,
+      "plan": "Apple TV",
+      "cycle": "monthly",
+      "firstSeen": "2022-10-24",
+      "lastSeen": "2023-10-25",
+      "evidenceUrl": "https://web.archive.org/web/20221024173551/https://www.apple.com/apple-tv-plus/"
+    },
+    {
+      "service": "Apple TV",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Apple TV",
+      "cycle": "monthly",
+      "firstSeen": "2023-10-25",
+      "lastSeen": "2025-08-21",
+      "evidenceUrl": "https://web.archive.org/web/20231025154527/https://www.apple.com/apple-tv-plus/"
+    },
+    {
+      "service": "Apple TV",
+      "currency": "USD",
+      "amountMinor": 1299,
+      "plan": "Apple TV",
+      "cycle": "monthly",
+      "firstSeen": "2025-08-21",
+      "lastSeen": "2026-08-26",
+      "evidenceUrl": "https://web.archive.org/web/20250821165601/https://www.apple.com/apple-tv-plus/"
+    },
+    {
+      "service": "Apple TV",
+      "currency": "USD",
+      "amountMinor": 1499,
+      "plan": "Apple TV",
+      "cycle": "monthly",
+      "firstSeen": "2026-08-28",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260828161009/https://www.apple.com/apple-tv/"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 695,
+      "plan": "Crunchyroll Premium",
+      "cycle": "monthly",
+      "firstSeen": "2015-08-09",
+      "lastSeen": "2019-04-30",
+      "evidenceUrl": "https://web.archive.org/web/20150809083945/http://www.crunchyroll.com:80/premium_comparison"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "Premium / Fan",
+      "cycle": "monthly",
+      "firstSeen": "2019-05-08",
+      "lastSeen": "2026-02-06",
+      "evidenceUrl": "https://web.archive.org/web/20190508003607/https://www.crunchyroll.com/freetrial/"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Fan",
+      "cycle": "monthly",
+      "firstSeen": "2026-02-08",
+      "lastSeen": "2026-10-23",
+      "evidenceUrl": "https://web.archive.org/web/20260208091006/https://www.crunchyroll.com/premium/"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 7999,
+      "plan": "Fan, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-01-03",
+      "lastSeen": "2026-01-07",
+      "evidenceUrl": "https://web.archive.org/web/20260103092107/https://www.crunchyroll.com/premium"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 9999,
+      "plan": "Fan, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-07-31",
+      "lastSeen": "2026-08-06",
+      "evidenceUrl": "https://web.archive.org/web/20260731034013/https://www.crunchyroll.com/premium"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Mega Fan",
+      "cycle": "monthly",
+      "firstSeen": "2020-09-10",
+      "lastSeen": "2024-05-01",
+      "evidenceUrl": "https://web.archive.org/web/20200910172035/https://www.crunchyroll.com/anime-news/2020/08/24-2/crunchyroll-introduces-new-membership-tiers-offers-even-more-access-to-anime"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 1199,
+      "plan": "Mega Fan",
+      "cycle": "monthly",
+      "firstSeen": "2024-05-02",
+      "lastSeen": "2026-02-06",
+      "evidenceUrl": "https://web.archive.org/web/20240502221329/https://www.crunchyroll.com/premium"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 1399,
+      "plan": "Mega Fan",
+      "cycle": "monthly",
+      "firstSeen": "2026-02-08",
+      "lastSeen": "2026-10-23",
+      "evidenceUrl": "https://web.archive.org/web/20260208091006/https://www.crunchyroll.com/premium/"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 11999,
+      "plan": "Mega Fan, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-01-03",
+      "lastSeen": "2026-01-07",
+      "evidenceUrl": "https://web.archive.org/web/20260103092107/https://www.crunchyroll.com/premium"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 13999,
+      "plan": "Mega Fan, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-07-31",
+      "lastSeen": "2026-08-06",
+      "evidenceUrl": "https://web.archive.org/web/20260731034013/https://www.crunchyroll.com/premium"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 1195,
+      "plan": "Premium+",
+      "cycle": "monthly",
+      "firstSeen": "2015-08-09",
+      "lastSeen": "2015-11-02",
+      "evidenceUrl": "https://web.archive.org/web/20150809083945/http://www.crunchyroll.com:80/premium_comparison"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 1499,
+      "plan": "Ultimate Fan",
+      "cycle": "monthly",
+      "firstSeen": "2020-09-10",
+      "lastSeen": "2024-05-01",
+      "evidenceUrl": "https://web.archive.org/web/20200910172035/https://www.crunchyroll.com/anime-news/2020/08/24-2/crunchyroll-introduces-new-membership-tiers-offers-even-more-access-to-anime"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 1599,
+      "plan": "Ultimate Fan",
+      "cycle": "monthly",
+      "firstSeen": "2024-05-02",
+      "lastSeen": "2026-02-06",
+      "evidenceUrl": "https://web.archive.org/web/20240502221329/https://www.crunchyroll.com/premium"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 1799,
+      "plan": "Ultimate Fan",
+      "cycle": "monthly",
+      "firstSeen": "2026-02-08",
+      "lastSeen": "2026-10-23",
+      "evidenceUrl": "https://web.archive.org/web/20260208091006/https://www.crunchyroll.com/premium/"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 14999,
+      "plan": "Ultimate Fan, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-01-03",
+      "lastSeen": "2026-01-07",
+      "evidenceUrl": "https://web.archive.org/web/20260103092107/https://www.crunchyroll.com/premium"
+    },
+    {
+      "service": "Crunchyroll",
+      "currency": "USD",
+      "amountMinor": 17999,
+      "plan": "Ultimate Fan, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-07-31",
+      "lastSeen": "2026-08-06",
+      "evidenceUrl": "https://web.archive.org/web/20260731034013/https://www.crunchyroll.com/premium"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "Basic (With Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2022-12-09",
+      "lastSeen": "2024-10-17",
+      "evidenceUrl": "https://web.archive.org/web/20221209002028/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Basic (With Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2024-10-20",
+      "lastSeen": "2025-10-21",
+      "evidenceUrl": "https://web.archive.org/web/20241020154737/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 1199,
+      "plan": "Basic (With Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2025-10-22",
+      "lastSeen": "2026-09-21",
+      "evidenceUrl": "https://web.archive.org/web/20251022001635/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 1249,
+      "plan": "Basic (With Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2026-09-22",
+      "lastSeen": "2026-10-01",
+      "evidenceUrl": "https://web.archive.org/web/20260922025053/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 699,
+      "plan": "Premium (No Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2019-11-28",
+      "lastSeen": "2021-03-26",
+      "evidenceUrl": "https://web.archive.org/web/20191128233800/https://www.disneyplus.com/welcome/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "Premium (No Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2021-03-27",
+      "lastSeen": "2022-12-08",
+      "evidenceUrl": "https://web.archive.org/web/20210327003826/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 1099,
+      "plan": "Premium (No Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2022-12-09",
+      "lastSeen": "2023-10-12",
+      "evidenceUrl": "https://web.archive.org/web/20221209002028/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 1399,
+      "plan": "Premium (No Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2023-10-13",
+      "lastSeen": "2024-10-17",
+      "evidenceUrl": "https://web.archive.org/web/20231013013723/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 1599,
+      "plan": "Premium (No Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2024-10-20",
+      "lastSeen": "2025-10-21",
+      "evidenceUrl": "https://web.archive.org/web/20241020154737/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 1899,
+      "plan": "Premium (No Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2025-10-22",
+      "lastSeen": "2026-09-21",
+      "evidenceUrl": "https://web.archive.org/web/20251022001635/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 2149,
+      "plan": "Premium (No Ads)",
+      "cycle": "monthly",
+      "firstSeen": "2026-09-22",
+      "lastSeen": "2026-10-01",
+      "evidenceUrl": "https://web.archive.org/web/20260922025053/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 6999,
+      "plan": "Premium (No Ads), annual",
+      "cycle": "annual",
+      "firstSeen": "2020-05-08",
+      "lastSeen": "2021-03-26",
+      "evidenceUrl": "https://web.archive.org/web/20200508164237/https://www.disneyplus.com/welcome"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 7999,
+      "plan": "Premium (No Ads), annual",
+      "cycle": "annual",
+      "firstSeen": "2021-03-27",
+      "lastSeen": "2022-12-08",
+      "evidenceUrl": "https://web.archive.org/web/20210327003826/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 10999,
+      "plan": "Premium (No Ads), annual",
+      "cycle": "annual",
+      "firstSeen": "2022-12-09",
+      "lastSeen": "2023-10-12",
+      "evidenceUrl": "https://web.archive.org/web/20221209002028/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 13999,
+      "plan": "Premium (No Ads), annual",
+      "cycle": "annual",
+      "firstSeen": "2023-10-13",
+      "lastSeen": "2024-10-17",
+      "evidenceUrl": "https://web.archive.org/web/20231013013723/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 15999,
+      "plan": "Premium (No Ads), annual",
+      "cycle": "annual",
+      "firstSeen": "2024-10-20",
+      "lastSeen": "2025-10-21",
+      "evidenceUrl": "https://web.archive.org/web/20241020154737/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 18999,
+      "plan": "Premium (No Ads), annual",
+      "cycle": "annual",
+      "firstSeen": "2025-10-22",
+      "lastSeen": "2026-09-21",
+      "evidenceUrl": "https://web.archive.org/web/20251022001635/https://www.disneyplus.com/"
+    },
+    {
+      "service": "Disney+",
+      "currency": "USD",
+      "amountMinor": 21499,
+      "plan": "Premium (No Ads), annual",
+      "cycle": "annual",
+      "firstSeen": "2026-09-22",
+      "lastSeen": "2026-10-01",
+      "evidenceUrl": "https://web.archive.org/web/20260922025053/https://www.disneyplus.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Basic With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2021-06-03",
+      "lastSeen": "2025-10-20",
+      "evidenceUrl": "https://web.archive.org/web/20210603003547/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 1099,
+      "plan": "Basic With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2025-10-21",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20251021080959/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 9999,
+      "plan": "Basic With Ads, annual",
+      "cycle": "annual",
+      "firstSeen": "2021-06-03",
+      "lastSeen": "2025-10-20",
+      "evidenceUrl": "https://web.archive.org/web/20210603003547/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 10999,
+      "plan": "Basic With Ads, annual",
+      "cycle": "annual",
+      "firstSeen": "2025-10-21",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20251021080959/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 1999,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2023-05-23",
+      "lastSeen": "2024-06-04",
+      "evidenceUrl": "https://web.archive.org/web/20230523061732/https://www.max.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 2099,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2024-06-05",
+      "lastSeen": "2025-10-20",
+      "evidenceUrl": "https://web.archive.org/web/20240605000605/https://www.max.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 2299,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2025-10-21",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20251021080959/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 19999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2023-05-23",
+      "lastSeen": "2024-06-04",
+      "evidenceUrl": "https://web.archive.org/web/20230523061732/https://www.max.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 20999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2024-06-05",
+      "lastSeen": "2025-10-20",
+      "evidenceUrl": "https://web.archive.org/web/20240605000605/https://www.max.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 22999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2025-10-21",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20251021080959/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 1499,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2020-06-01",
+      "lastSeen": "2023-01-12",
+      "evidenceUrl": "https://web.archive.org/web/20200601024418/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 1599,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2023-01-13",
+      "lastSeen": "2024-06-04",
+      "evidenceUrl": "https://web.archive.org/web/20230113002359/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 1699,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2024-06-05",
+      "lastSeen": "2025-10-20",
+      "evidenceUrl": "https://web.archive.org/web/20240605000605/https://www.max.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 1849,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2025-10-21",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20251021080959/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 14999,
+      "plan": "Standard, annual",
+      "cycle": "annual",
+      "firstSeen": "2021-06-03",
+      "lastSeen": "2024-06-04",
+      "evidenceUrl": "https://web.archive.org/web/20210603003547/https://www.hbomax.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 16999,
+      "plan": "Standard, annual",
+      "cycle": "annual",
+      "firstSeen": "2024-06-05",
+      "lastSeen": "2025-10-20",
+      "evidenceUrl": "https://web.archive.org/web/20240605000605/https://www.max.com/"
+    },
+    {
+      "service": "HBO Max",
+      "currency": "USD",
+      "amountMinor": 18499,
+      "plan": "Standard, annual",
+      "cycle": "annual",
+      "firstSeen": "2025-10-21",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20251021080959/https://www.hbomax.com/"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 1199,
+      "plan": "No Ads",
+      "cycle": "monthly",
+      "firstSeen": "2020-09-01",
+      "lastSeen": "2021-10-08",
+      "evidenceUrl": "https://web.archive.org/web/20200901010036/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 1299,
+      "plan": "No Ads",
+      "cycle": "monthly",
+      "firstSeen": "2021-10-09",
+      "lastSeen": "2022-10-10",
+      "evidenceUrl": "https://web.archive.org/web/20211009002108/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 1499,
+      "plan": "No Ads",
+      "cycle": "monthly",
+      "firstSeen": "2022-10-11",
+      "lastSeen": "2023-10-12",
+      "evidenceUrl": "https://web.archive.org/web/20221011002856/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 1799,
+      "plan": "No Ads",
+      "cycle": "monthly",
+      "firstSeen": "2023-10-13",
+      "lastSeen": "2024-10-17",
+      "evidenceUrl": "https://web.archive.org/web/20231013014104/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 1899,
+      "plan": "No Ads",
+      "cycle": "monthly",
+      "firstSeen": "2024-10-18",
+      "lastSeen": "2026-09-23",
+      "evidenceUrl": "https://web.archive.org/web/20241018025611/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 2149,
+      "plan": "No Ads",
+      "cycle": "monthly",
+      "firstSeen": "2026-09-24",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260924001156/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2018-02-09",
+      "lastSeen": "2019-02-26",
+      "evidenceUrl": "https://web.archive.org/web/20180209234524/http://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 599,
+      "plan": "With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2019-02-27",
+      "lastSeen": "2021-10-08",
+      "evidenceUrl": "https://web.archive.org/web/20190227023627/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 699,
+      "plan": "With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2021-10-09",
+      "lastSeen": "2022-10-10",
+      "evidenceUrl": "https://web.archive.org/web/20211009002108/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2022-10-11",
+      "lastSeen": "2024-10-17",
+      "evidenceUrl": "https://web.archive.org/web/20221011002856/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2024-10-18",
+      "lastSeen": "2025-10-21",
+      "evidenceUrl": "https://web.archive.org/web/20241018025611/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 1199,
+      "plan": "With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2025-10-22",
+      "lastSeen": "2026-09-23",
+      "evidenceUrl": "https://web.archive.org/web/20251022030321/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Hulu",
+      "currency": "USD",
+      "amountMinor": 1249,
+      "plan": "With Ads",
+      "cycle": "monthly",
+      "firstSeen": "2026-09-24",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260924001156/https://www.hulu.com/welcome"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "Basic",
+      "cycle": "monthly",
+      "firstSeen": "2016-12-08",
+      "lastSeen": "2019-01-15",
+      "evidenceUrl": "https://web.archive.org/web/20161208003846/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 899,
+      "plan": "Basic",
+      "cycle": "monthly",
+      "firstSeen": "2019-01-16",
+      "lastSeen": "2021-12-24",
+      "evidenceUrl": "https://web.archive.org/web/20190116013247/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Basic",
+      "cycle": "monthly",
+      "firstSeen": "2022-01-14",
+      "lastSeen": "2023-06-03",
+      "evidenceUrl": "https://web.archive.org/web/20220114223929/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1199,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2016-12-08",
+      "lastSeen": "2017-10-05",
+      "evidenceUrl": "https://web.archive.org/web/20161208003846/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1399,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2017-10-09",
+      "lastSeen": "2019-01-15",
+      "evidenceUrl": "https://web.archive.org/web/20171009222921/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1599,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2019-01-16",
+      "lastSeen": "2020-10-18",
+      "evidenceUrl": "https://web.archive.org/web/20190116013247/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1799,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2020-11-15",
+      "lastSeen": "2021-12-24",
+      "evidenceUrl": "https://web.archive.org/web/20201115053652/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1999,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2022-01-14",
+      "lastSeen": "2023-10-04",
+      "evidenceUrl": "https://web.archive.org/web/20220114223929/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 2299,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2023-12-06",
+      "lastSeen": "2024-12-25",
+      "evidenceUrl": "https://web.archive.org/web/20231206195648/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 2499,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2025-01-22",
+      "lastSeen": "2026-02-25",
+      "evidenceUrl": "https://web.archive.org/web/20250122044245/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 2699,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2026-03-26",
+      "lastSeen": "2026-08-28",
+      "evidenceUrl": "https://web.archive.org/web/20260326233800/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2016-12-08",
+      "lastSeen": "2017-10-05",
+      "evidenceUrl": "https://web.archive.org/web/20161208003846/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1099,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2017-10-09",
+      "lastSeen": "2019-01-15",
+      "evidenceUrl": "https://web.archive.org/web/20171009222921/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1299,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2019-01-16",
+      "lastSeen": "2020-10-18",
+      "evidenceUrl": "https://web.archive.org/web/20190116013247/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1399,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2020-11-15",
+      "lastSeen": "2021-12-24",
+      "evidenceUrl": "https://web.archive.org/web/20201115053652/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1549,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2022-01-14",
+      "lastSeen": "2024-12-25",
+      "evidenceUrl": "https://web.archive.org/web/20220114223929/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1799,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2025-01-22",
+      "lastSeen": "2026-02-25",
+      "evidenceUrl": "https://web.archive.org/web/20250122044245/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 1999,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2026-03-26",
+      "lastSeen": "2026-08-28",
+      "evidenceUrl": "https://web.archive.org/web/20260326233800/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 699,
+      "plan": "Basic with ads",
+      "cycle": "monthly",
+      "firstSeen": "2022-10-14",
+      "lastSeen": "2023-04-23",
+      "evidenceUrl": "https://web.archive.org/web/20221014063740/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 699,
+      "plan": "Standard with ads",
+      "cycle": "monthly",
+      "firstSeen": "2023-04-25",
+      "lastSeen": "2024-12-25",
+      "evidenceUrl": "https://web.archive.org/web/20230425014903/https://www.netflix.com/"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "Standard with ads",
+      "cycle": "monthly",
+      "firstSeen": "2025-01-22",
+      "lastSeen": "2026-02-25",
+      "evidenceUrl": "https://web.archive.org/web/20250122044245/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix",
+      "currency": "USD",
+      "amountMinor": 899,
+      "plan": "Standard with ads",
+      "cycle": "monthly",
+      "firstSeen": "2026-03-26",
+      "lastSeen": "2026-08-28",
+      "evidenceUrl": "https://web.archive.org/web/20260326233800/https://help.netflix.com/en/node/24926/us"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 599,
+      "plan": "Basic",
+      "cycle": "monthly",
+      "firstSeen": "2015-02-15",
+      "lastSeen": "2020-12-13",
+      "evidenceUrl": "https://web.archive.org/web/20150215151003/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 699,
+      "plan": "Basic",
+      "cycle": "monthly",
+      "firstSeen": "2022-06-30",
+      "lastSeen": "2023-06-22",
+      "evidenceUrl": "https://web.archive.org/web/20220630013101/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 899,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2015-02-15",
+      "lastSeen": "2017-09-27",
+      "evidenceUrl": "https://web.archive.org/web/20150215151003/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 999,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2017-11-13",
+      "lastSeen": "2019-05-16",
+      "evidenceUrl": "https://web.archive.org/web/20171113213219/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 1199,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2019-09-13",
+      "lastSeen": "2019-09-13",
+      "evidenceUrl": "https://web.archive.org/web/20190913024923/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 1399,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2020-12-13",
+      "lastSeen": "2020-12-13",
+      "evidenceUrl": "https://web.archive.org/web/20201213234724/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 1599,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2022-06-30",
+      "lastSeen": "2023-08-30",
+      "evidenceUrl": "https://web.archive.org/web/20220630013101/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 1799,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2023-12-09",
+      "lastSeen": "2025-02-05",
+      "evidenceUrl": "https://web.archive.org/web/20231209085006/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 1899,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2025-03-21",
+      "lastSeen": "2026-06-09",
+      "evidenceUrl": "https://web.archive.org/web/20250321180147/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 2099,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2026-10-03",
+      "lastSeen": "2026-11-09",
+      "evidenceUrl": "https://web.archive.org/web/20261003050806/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 699,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2015-02-15",
+      "lastSeen": "2015-02-15",
+      "evidenceUrl": "https://web.archive.org/web/20150215151003/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 749,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2016-11-13",
+      "lastSeen": "2017-09-27",
+      "evidenceUrl": "https://web.archive.org/web/20161113030944/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 799,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2017-11-13",
+      "lastSeen": "2019-05-16",
+      "evidenceUrl": "https://web.archive.org/web/20171113213219/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 899,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2019-09-13",
+      "lastSeen": "2019-09-13",
+      "evidenceUrl": "https://web.archive.org/web/20190913024923/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 999,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2020-12-13",
+      "lastSeen": "2020-12-13",
+      "evidenceUrl": "https://web.archive.org/web/20201213234724/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 1099,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2022-06-30",
+      "lastSeen": "2025-02-05",
+      "evidenceUrl": "https://web.archive.org/web/20220630013101/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 1299,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2025-03-21",
+      "lastSeen": "2026-06-09",
+      "evidenceUrl": "https://web.archive.org/web/20250321180147/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 1399,
+      "plan": "Standard",
+      "cycle": "monthly",
+      "firstSeen": "2026-11-01",
+      "lastSeen": "2026-11-09",
+      "evidenceUrl": "https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 499,
+      "plan": "Basic with adverts",
+      "cycle": "monthly",
+      "firstSeen": "2023-03-26",
+      "lastSeen": "2023-03-26",
+      "evidenceUrl": "https://web.archive.org/web/20230326185915/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 499,
+      "plan": "Standard with adverts",
+      "cycle": "monthly",
+      "firstSeen": "2023-05-11",
+      "lastSeen": "2025-02-05",
+      "evidenceUrl": "https://web.archive.org/web/20230511180626/http://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 599,
+      "plan": "Standard with adverts",
+      "cycle": "monthly",
+      "firstSeen": "2025-03-21",
+      "lastSeen": "2026-06-09",
+      "evidenceUrl": "https://web.archive.org/web/20250321180147/https://help.netflix.com/en/node/24926/gb"
+    },
+    {
+      "service": "Netflix UK",
+      "currency": "GBP",
+      "amountMinor": 799,
+      "plan": "Standard with adverts",
+      "cycle": "monthly",
+      "firstSeen": "2026-10-03",
+      "lastSeen": "2026-11-09",
+      "evidenceUrl": "https://web.archive.org/web/20261003050806/https://www.netflix.com/gb/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 599,
+      "plan": "Essential",
+      "cycle": "monthly",
+      "firstSeen": "2021-04-16",
+      "lastSeen": "2021-05-07",
+      "evidenceUrl": "https://web.archive.org/web/20210416080514/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 499,
+      "plan": "Essential",
+      "cycle": "monthly",
+      "firstSeen": "2021-06-09",
+      "lastSeen": "2023-06-16",
+      "evidenceUrl": "https://web.archive.org/web/20210609201917/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 599,
+      "plan": "Essential",
+      "cycle": "monthly",
+      "firstSeen": "2023-06-27",
+      "lastSeen": "2024-08-18",
+      "evidenceUrl": "https://web.archive.org/web/20230627184841/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "Essential",
+      "cycle": "monthly",
+      "firstSeen": "2024-08-21",
+      "lastSeen": "2026-01-15",
+      "evidenceUrl": "https://web.archive.org/web/20240821021740/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 899,
+      "plan": "Essential",
+      "cycle": "monthly",
+      "firstSeen": "2026-01-16",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260116072257/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 5999,
+      "plan": "Essential, annual",
+      "cycle": "annual",
+      "firstSeen": "2021-04-16",
+      "lastSeen": "2021-05-07",
+      "evidenceUrl": "https://web.archive.org/web/20210416080514/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 4999,
+      "plan": "Essential, annual",
+      "cycle": "annual",
+      "firstSeen": "2021-06-09",
+      "lastSeen": "2023-06-16",
+      "evidenceUrl": "https://web.archive.org/web/20210609201917/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 5999,
+      "plan": "Essential, annual",
+      "cycle": "annual",
+      "firstSeen": "2023-06-27",
+      "lastSeen": "2026-01-15",
+      "evidenceUrl": "https://web.archive.org/web/20230627184841/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 8999,
+      "plan": "Essential, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-01-16",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260116072257/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2021-04-16",
+      "lastSeen": "2023-06-16",
+      "evidenceUrl": "https://web.archive.org/web/20210416080514/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 1199,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2023-06-27",
+      "lastSeen": "2024-08-18",
+      "evidenceUrl": "https://web.archive.org/web/20230627184841/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 1299,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2024-08-21",
+      "lastSeen": "2026-01-15",
+      "evidenceUrl": "https://web.archive.org/web/20240821021740/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 1399,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2026-01-16",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260116072257/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 9999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2021-04-16",
+      "lastSeen": "2023-06-16",
+      "evidenceUrl": "https://web.archive.org/web/20210416080514/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 11999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2023-06-27",
+      "lastSeen": "2026-01-15",
+      "evidenceUrl": "https://web.archive.org/web/20230627184841/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Paramount+",
+      "currency": "USD",
+      "amountMinor": 13999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-01-16",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260116072257/https://www.paramountplus.com/account/signup/pickplan/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 499,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2020-02-14",
+      "lastSeen": "2023-07-18",
+      "evidenceUrl": "https://web.archive.org/web/20200214032104/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 599,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2023-07-18",
+      "lastSeen": "2024-07-18",
+      "evidenceUrl": "https://web.archive.org/web/20230718092218/https://www.peacocktv.com/help/article/how-much-does-a-peacock-subscription-cost"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2024-07-19",
+      "lastSeen": "2025-07-22",
+      "evidenceUrl": "https://web.archive.org/web/20240719000653/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 1099,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2025-07-24",
+      "lastSeen": "2026-08-16",
+      "evidenceUrl": "https://web.archive.org/web/20250724234622/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 1299,
+      "plan": "Premium",
+      "cycle": "monthly",
+      "firstSeen": "2026-08-18",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260818044822/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 999,
+      "plan": "Premium Plus",
+      "cycle": "monthly",
+      "firstSeen": "2021-06-01",
+      "lastSeen": "2023-07-18",
+      "evidenceUrl": "https://web.archive.org/web/20210601000317/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 1199,
+      "plan": "Premium Plus",
+      "cycle": "monthly",
+      "firstSeen": "2023-08-01",
+      "lastSeen": "2024-07-18",
+      "evidenceUrl": "https://web.archive.org/web/20230801002905/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 1399,
+      "plan": "Premium Plus",
+      "cycle": "monthly",
+      "firstSeen": "2024-07-19",
+      "lastSeen": "2025-07-22",
+      "evidenceUrl": "https://web.archive.org/web/20240719000653/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 1699,
+      "plan": "Premium Plus",
+      "cycle": "monthly",
+      "firstSeen": "2025-07-24",
+      "lastSeen": "2026-08-16",
+      "evidenceUrl": "https://web.archive.org/web/20250724234622/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 1999,
+      "plan": "Premium Plus",
+      "cycle": "monthly",
+      "firstSeen": "2026-08-18",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260818044822/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 9999,
+      "plan": "Premium Plus, annual",
+      "cycle": "annual",
+      "firstSeen": "2023-02-01",
+      "lastSeen": "2023-07-18",
+      "evidenceUrl": "https://web.archive.org/web/20230201000823/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 11999,
+      "plan": "Premium Plus, annual",
+      "cycle": "annual",
+      "firstSeen": "2023-08-01",
+      "lastSeen": "2023-09-15",
+      "evidenceUrl": "https://web.archive.org/web/20230801002905/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 13999,
+      "plan": "Premium Plus, annual",
+      "cycle": "annual",
+      "firstSeen": "2024-10-16",
+      "lastSeen": "2025-07-22",
+      "evidenceUrl": "https://web.archive.org/web/20241016004617/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 16999,
+      "plan": "Premium Plus, annual",
+      "cycle": "annual",
+      "firstSeen": "2025-07-24",
+      "lastSeen": "2026-08-16",
+      "evidenceUrl": "https://web.archive.org/web/20250724234622/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 19999,
+      "plan": "Premium Plus, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-08-18",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260818044822/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 4999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2022-10-02",
+      "lastSeen": "2023-07-18",
+      "evidenceUrl": "https://web.archive.org/web/20221002140410/https://www.peacocktv.com/help/article/how-much-does-a-peacock-subscription-cost"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 5999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2023-07-18",
+      "lastSeen": "2024-06-16",
+      "evidenceUrl": "https://web.archive.org/web/20230718092218/https://www.peacocktv.com/help/article/how-much-does-a-peacock-subscription-cost"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 7999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2024-09-06",
+      "lastSeen": "2025-07-22",
+      "evidenceUrl": "https://web.archive.org/web/20240906164601/https://www.peacocktv.com/help/article/how-much-does-a-peacock-subscription-cost"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 10999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2025-07-24",
+      "lastSeen": "2026-08-16",
+      "evidenceUrl": "https://web.archive.org/web/20250724234622/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 12999,
+      "plan": "Premium, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-08-18",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260818044822/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 799,
+      "plan": "Select",
+      "cycle": "monthly",
+      "firstSeen": "2025-08-01",
+      "lastSeen": "2026-08-16",
+      "evidenceUrl": "https://web.archive.org/web/20250801075531/https://www.peacocktv.com/help/article/how-much-does-a-peacock-subscription-cost"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 899,
+      "plan": "Select",
+      "cycle": "monthly",
+      "firstSeen": "2026-08-18",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260818044822/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 7999,
+      "plan": "Select, annual",
+      "cycle": "annual",
+      "firstSeen": "2025-08-01",
+      "lastSeen": "2026-08-16",
+      "evidenceUrl": "https://web.archive.org/web/20250801075531/https://www.peacocktv.com/help/article/how-much-does-a-peacock-subscription-cost"
+    },
+    {
+      "service": "Peacock",
+      "currency": "USD",
+      "amountMinor": 8999,
+      "plan": "Select, annual",
+      "cycle": "annual",
+      "firstSeen": "2026-08-18",
+      "lastSeen": "2026-11-01",
+      "evidenceUrl": "https://web.archive.org/web/20260818044822/https://www.peacocktv.com/"
+    },
+    {
+      "service": "Prime Video",
+      "currency": "USD",
+      "amountMinor": 899,
+      "plan": "Prime Video",
+      "cycle": "monthly",
+      "firstSeen": "2016-04-23",
+      "lastSeen": "2026-11-13",
+      "evidenceUrl": "https://web.archive.org/web/20160423003952/https://www.amazon.com/gp/help/customer/display.html?nodeId=200444160"
+    }
+  ]
+}
