@@ -1,14 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo, memo } from "react";
 import { createRoot } from "react-dom/client";
 import {
   day,
   empty,
+  iso,
+  inactivity,
   history,
   pricePerView,
+  coveredServices,
   serviceKey,
   readYaml,
   writeYaml,
-  readHistoryFile,
+  readHistoryInput,
+  viewingKey,
   merge,
 } from "./ledger.js";
 import "./style.css";
@@ -34,15 +38,24 @@ const today = Date.UTC(
   localDate.getMonth(),
   localDate.getDate(),
 );
+const dateFormat = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  timeZone: "UTC",
+});
+const fullDateFormat = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "UTC",
+});
+const monthFormat = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  timeZone: "UTC",
+});
 const fmt = (time, year = false) =>
-  new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    ...(year ? { year: "numeric" } : {}),
-    timeZone: "UTC",
-  }).format(time);
-const monthName = (time) =>
-  new Date(time).toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+  (year ? fullDateFormat : dateFormat).format(time);
+const monthName = (time) => monthFormat.format(time);
 function formatCharge(minor, currency) {
   const formatter = new Intl.NumberFormat("en", {
     style: "currency",
@@ -123,8 +136,10 @@ function Import({ close, apply }) {
     setError("");
     if (!file) return;
     try {
-      const text = await file.text();
-      const next = readHistoryFile(text, file.name);
+      const input = /\.pdf$/i.test(file.name)
+        ? await file.arrayBuffer()
+        : await file.text();
+      const next = await readHistoryInput(input, file.name);
       if (seq.current === request) setIncoming(next);
     } catch (e) {
       if (seq.current === request) setError(e.message);
@@ -146,16 +161,18 @@ function Import({ close, apply }) {
           }}
         >
           <option value="file">History file</option>
-          <option value="netflix">Paste Netflix payment history (USD)</option>
+          <option value="payments">
+            Paste Hulu or Netflix payment history (USD)
+          </option>
         </select>
       </label>
       {entry === "file" ? (
         <>
           <p>
-            Open NetflixViewingHistory.csv, a Netflix payment history .txt, a
-            strmr YAML ledger or a CSV with service, start, and end columns. Use
-            the first uncovered day for end. Leave it blank for ongoing
-            subscriptions.
+            Open a Hulu privacy report PDF, NetflixViewingHistory.csv, a Hulu or
+            Netflix payment history .txt, a strmr YAML ledger or a CSV with
+            service, start, and end columns. Use the first uncovered day for
+            end. Leave it blank for ongoing subscriptions.
           </p>
           <p>
             For charges, use service, date, and cycle (monthly or annual). Each
@@ -170,20 +187,22 @@ function Import({ close, apply }) {
             History file
             <input
               type="file"
-              accept=".yml,.yaml,.csv,.txt"
+              accept=".yml,.yaml,.csv,.txt,.pdf"
               onChange={(e) => choose(e.target.files[0])}
             />
           </label>
         </>
       ) : (
         <label>
-          Netflix payment history (US dollars)
+          Hulu or Netflix payment history (US dollars)
           <textarea
             rows={6}
-            placeholder="Paste the payment rows including dates, totals, and tax breakdowns"
+            placeholder="Paste the payment table with column headers and charge totals"
             onChange={(e) => {
               const text = e.target.value;
-              choose(text.trim() ? new File([text], "netflix.txt") : null);
+              choose(
+                text.trim() ? new File([text], "payment-history.txt") : null,
+              );
             }}
           />
         </label>
@@ -199,7 +218,8 @@ function Import({ close, apply }) {
         <p>
           {incoming.periods.length} subscription records ·{" "}
           {incoming.viewing?.length || 0} viewing entries ·{" "}
-          {incoming.periods.filter((p) => p.estimate).length} MapSub estimates
+          {incoming.periods.filter((p) => p.estimate).length} charge-based
+          periods
         </p>
       )}
       {error && <p role="alert">{error}</p>}
@@ -219,7 +239,189 @@ function Import({ close, apply }) {
     </Dialog>
   );
 }
-function Timeline({ names, spans, start, end, year, select }) {
+const basisLabel = {
+  recorded: "Recorded period",
+  cycle: "Billing cycle",
+  price: "Price match",
+};
+function coverageBasis(span, name) {
+  if (span.billingCycle.includes(name)) return "cycle";
+  return span.estimated.includes(name) ? "price" : "recorded";
+}
+function DayInspector({ time, ledger, names, span, start, end, pick }) {
+  const date = iso(time);
+  const byDate = useMemo(() => {
+    const days = new Map();
+    for (const view of ledger.viewing || []) {
+      if (!days.has(view.date)) days.set(view.date, []);
+      days.get(view.date).push(view);
+    }
+    return days;
+  }, [ledger.viewing]);
+  const views = byDate.get(date) || [];
+  const costs =
+    time <= today
+      ? pricePerView({ ...ledger, viewing: views }, time, time + day)
+      : [];
+  const active = names.filter((name) =>
+    span?.services.includes(serviceKey(name)),
+  );
+  return (
+    <section className="day-inspector" aria-label="Day details">
+      <div className="day-heading">
+        <h3>{fmt(time, true)}</h3>
+        <input
+          type="date"
+          aria-label="Inspect date"
+          value={date}
+          min={iso(start)}
+          max={iso(end - day)}
+          onChange={(e) => {
+            const t = e.target.valueAsNumber;
+            if (t >= start && t < end) pick(t);
+          }}
+        />
+      </div>
+      <div className="day-columns">
+        <div className="day-coverage">
+          {time > today ? (
+            <p>Future date · History runs through {fmt(today, true)}.</p>
+          ) : (
+            <p>
+              <strong>
+                {active.length} active{" "}
+                {active.length === 1 ? "service" : "services"}
+              </strong>
+              {" · "}
+              {views.length} recorded {views.length === 1 ? "view" : "views"}
+            </p>
+          )}
+          <ul className="daily-services">
+            {active.map((name) => (
+              <li key={name}>
+                <Mark name={name} />
+                <span>
+                  {name}
+                  <small>
+                    {basisLabel[coverageBasis(span, serviceKey(name))]}
+                  </small>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="day-charges">
+          <table>
+            <thead>
+              <tr>
+                <th>Service or bundle</th>
+                <th>Allocated daily cost</th>
+                <th>Covered views</th>
+                <th>Cost per view</th>
+              </tr>
+            </thead>
+            <tbody>
+              {costs.map((r) => (
+                <tr key={JSON.stringify([r.service, r.currency])}>
+                  <td>{r.service}</td>
+                  <td>
+                    {formatCharge(r.costMinor, r.currency)} {r.currency}
+                  </td>
+                  <td>{r.views}</td>
+                  <td>
+                    {r.perViewMinor === null
+                      ? "—"
+                      : formatCharge(r.perViewMinor, r.currency)}
+                  </td>
+                </tr>
+              ))}
+              {!costs.length && (
+                <tr>
+                  <td colSpan={4}>No allocated cost for this day.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+function IdlePeriods({ ledger, start, end, names }) {
+  const [minimum, setMinimum] = useState(30);
+  const gaps = inactivity(ledger, today + day, minimum).filter(
+    (g) => g.start < end && g.end > start,
+  );
+  const hasViews = new Set(
+    (ledger.viewing || []).map((v) => serviceKey(v.service)),
+  );
+  const missing = names.filter((n) => !hasViews.has(serviceKey(n)));
+  return (
+    <section className="panel idle-panel">
+      <div className="panelhead">
+        <div>
+          <h2>Inactivity</h2>
+          <p>
+            Continuous coverage with no recorded views. Gaps in viewing exports
+            can extend a streak.
+          </p>
+        </div>
+        <select
+          aria-label="Minimum inactive streak"
+          value={minimum}
+          onChange={(e) => setMinimum(Number(e.target.value))}
+        >
+          {[30, 60, 90].map((n) => (
+            <option key={n} value={n}>
+              {n}+ days
+            </option>
+          ))}
+        </select>
+      </div>
+      {gaps.length ? (
+        <div className="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>First idle day</th>
+                <th>Last idle day</th>
+                <th>Days</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gaps.map((g) => (
+                <tr key={g.name + iso(g.start)}>
+                  <td>{g.name}</td>
+                  <td>{fmt(g.start, true)}</td>
+                  <td>{fmt(g.end - day, true)}</td>
+                  <td>{(g.end - g.start) / day}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className="empty">
+          No qualifying streaks in the available history for this year.
+        </p>
+      )}
+      {missing.length > 0 && (
+        <p className="empty">
+          No viewing history imported for {missing.join(", ")}.
+        </p>
+      )}
+    </section>
+  );
+}
+const YearGrid = memo(function YearGrid({
+  names,
+  spans,
+  start,
+  end,
+  year,
+  select,
+}) {
   const pct = (t) => (100 * (t - start)) / (end - start) + "%";
   const style = (a, b) => ({
     left: pct(a),
@@ -236,11 +438,160 @@ function Timeline({ names, spans, start, end, year, select }) {
     </>
   );
   return (
+    <>
+      <div className="chartrow axis">
+        <div>SERVICE</div>
+        <div className="track">
+          {ticks.map((t) => (
+            <small key={t} style={{ left: pct(t) }}>
+              {monthName(t)}
+            </small>
+          ))}
+        </div>
+        <div
+          className="month-count"
+          title="Calendar months with at least one covered day"
+        >
+          Months
+        </div>
+      </div>
+      {names.map((name) => {
+        const runs = [];
+        for (const s of spans)
+          if (s.services.includes(serviceKey(name))) {
+            const basis = coverageBasis(s, serviceKey(name));
+            if (runs.at(-1)?.end === s.start && runs.at(-1).basis === basis)
+              runs.at(-1).end = s.end;
+            else runs.push({ start: s.start, end: s.end, basis });
+          }
+        const months = ticks.filter((start, i) =>
+          runs.some(
+            (run) => run.start < (ticks[i + 1] ?? end) && start < run.end,
+          ),
+        ).length;
+        return (
+          <div className="chartrow" key={name}>
+            <div className="service">
+              <Mark name={name} />
+              {name}
+            </div>
+            <div className="track">
+              {guides}
+              {runs.map((r) => (
+                <button
+                  className={"bar " + r.basis}
+                  key={r.start}
+                  style={{
+                    ...style(r.start, r.end),
+                    "--ink": brand(name).color,
+                  }}
+                  title={name + " · " + fmt(r.start) + " – " + fmt(r.end - day)}
+                  aria-label={
+                    name +
+                    (" · " + basisLabel[r.basis] + " · ") +
+                    fmt(r.start) +
+                    " through " +
+                    fmt(r.end - day)
+                  }
+                  onClick={() =>
+                    select({
+                      title: name,
+                      body:
+                        fmt(r.start, true) +
+                        " – " +
+                        fmt(r.end - day, true) +
+                        " · " +
+                        (r.end - r.start) / day +
+                        (" days · " + basisLabel[r.basis]),
+                    })
+                  }
+                />
+              ))}
+            </div>
+            <div className="month-count" aria-label={months + " active months"}>
+              {months}
+            </div>
+          </div>
+        );
+      })}
+      {!names.length && (
+        <p className="empty">No coverage recorded for {year}.</p>
+      )}
+      <div className="chartrow density">
+        <div className="service">
+          <Icon type="overlap" />
+          Overlap
+        </div>
+        <div className="track">
+          {guides}
+          {spans
+            .filter((s) => s.services.length > 1)
+            .map((s) => (
+              <button
+                key={s.start}
+                className="densitybar"
+                style={{
+                  ...style(s.start, s.end),
+                  opacity: Math.min(1, 0.45 + s.services.length * 0.12),
+                }}
+                title={s.services.join(", ")}
+                aria-label={
+                  "Inspect " +
+                  s.services.length +
+                  " services on " +
+                  fmt(s.start)
+                }
+                onClick={() =>
+                  select({
+                    title: s.services.length + " overlapping services",
+                    body:
+                      fmt(s.start, true) +
+                      " – " +
+                      fmt(s.end - day, true) +
+                      (s.estimated.length
+                        ? " · Dates derived from charges for " +
+                          names
+                            .filter((n) => s.estimated.includes(serviceKey(n)))
+                            .join(", ")
+                        : ""),
+                    list: names.filter((n) =>
+                      s.services.includes(serviceKey(n)),
+                    ),
+                  })
+                }
+              >
+                {(s.end - s.start) / (end - start) > 0.038
+                  ? s.services.length
+                  : ""}
+              </button>
+            ))}
+        </div>
+      </div>
+    </>
+  );
+});
+
+function Timeline({ names, spans, start, end, year, select, ledger }) {
+  const [selected, setSelected] = useState(Math.min(today, end - day));
+  function inspect(event) {
+    const track = event.target.closest(".track");
+    if (!track) return;
+    const { left, width } = track.getBoundingClientRect();
+    const fraction = Math.max(0, Math.min(1, (event.clientX - left) / width));
+    setSelected(
+      Math.min(
+        end - day,
+        start + Math.floor((fraction * (end - start)) / day) * day,
+      ),
+    );
+  }
+  const now = today >= start && today < end;
+  return (
     <section className="panel">
       <div className="panelhead">
         <div>
           <h2>Subscription timeline</h2>
-          <p>Coverage by service</p>
+          <p>Hover over a day to inspect services, views and cost.</p>
         </div>
         <span className="yearstamp">
           <Icon type="calendar" />
@@ -248,145 +599,48 @@ function Timeline({ names, spans, start, end, year, select }) {
         </span>
       </div>
       <div className="scroll">
-        <div className="chart">
-          <div className="chartrow axis">
-            <div>SERVICE</div>
-            <div className="track">
-              {ticks.map((t) => (
-                <small key={t} style={{ left: pct(t) }}>
-                  {monthName(t)}
-                </small>
-              ))}
-            </div>
-          </div>
-          {names.map((name) => {
-            const runs = [];
-            for (const s of spans)
-              if (s.services.includes(serviceKey(name))) {
-                const estimated = s.estimated.includes(serviceKey(name));
-                if (
-                  runs.at(-1)?.end === s.start &&
-                  runs.at(-1).estimated === estimated
-                )
-                  runs.at(-1).end = s.end;
-                else runs.push({ start: s.start, end: s.end, estimated });
-              }
-            return (
-              <div className="chartrow" key={name}>
-                <div className="service">
-                  <Mark name={name} />
-                  {name}
-                </div>
-                <div className="track">
-                  {guides}
-                  {runs.map((r) => (
-                    <button
-                      className={r.estimated ? "bar estimated" : "bar"}
-                      key={r.start}
-                      style={{
-                        ...style(r.start, r.end),
-                        "--ink": brand(name).color,
-                      }}
-                      title={
-                        name + " · " + fmt(r.start) + " – " + fmt(r.end - day)
-                      }
-                      aria-label={
-                        name +
-                        (r.estimated ? " estimated coverage " : " coverage ") +
-                        fmt(r.start) +
-                        " through " +
-                        fmt(r.end - day)
-                      }
-                      onClick={() =>
-                        select({
-                          title: name,
-                          body:
-                            fmt(r.start, true) +
-                            " – " +
-                            fmt(r.end - day, true) +
-                            " · " +
-                            (r.end - r.start) / day +
-                            (r.estimated
-                              ? " estimated days from MapSub pricing"
-                              : " covered days in view"),
-                        })
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-          {!names.length && (
-            <p className="empty">No coverage recorded for {year}.</p>
-          )}
-          <div className="chartrow density">
-            <div className="service">
-              <Icon type="overlap" />
-              Overlap
-            </div>
-            <div className="track">
-              {guides}
-              {spans
-                .filter((s) => s.services.length > 1)
-                .map((s) => (
-                  <button
-                    key={s.start}
-                    className="densitybar"
-                    style={{
-                      ...style(s.start, s.end),
-                      opacity: Math.min(1, 0.45 + s.services.length * 0.12),
-                    }}
-                    title={s.services.join(", ")}
-                    aria-label={
-                      "Inspect " +
-                      s.services.length +
-                      " services on " +
-                      fmt(s.start)
-                    }
-                    onClick={() =>
-                      select({
-                        title: s.services.length + " overlapping services",
-                        body:
-                          fmt(s.start, true) +
-                          " – " +
-                          fmt(s.end - day, true) +
-                          (s.estimated.length
-                            ? " · Estimated coverage for " +
-                              names
-                                .filter((n) =>
-                                  s.estimated.includes(serviceKey(n)),
-                                )
-                                .join(", ")
-                            : ""),
-                        list: names.filter((n) =>
-                          s.services.includes(serviceKey(n)),
-                        ),
-                      })
-                    }
-                  >
-                    {(s.end - s.start) / (end - start) > 0.038
-                      ? s.services.length
-                      : ""}
-                  </button>
-                ))}
-            </div>
-          </div>
+        <div
+          className="chart"
+          style={{
+            "--selected":
+              (100 * (selected + day / 2 - start)) / (end - start) + "%",
+          }}
+          onPointerMove={inspect}
+          onPointerDown={inspect}
+        >
+          <YearGrid {...{ names, spans, start, end, year, select }} />
         </div>
       </div>
+      <DayInspector
+        time={selected}
+        start={start}
+        end={end}
+        ledger={ledger}
+        names={names}
+        span={spans.find((s) => s.start <= selected && selected < s.end)}
+        pick={setSelected}
+      />
       <footer className="legend">
         <span>
           <b className="swatch" />
-          Subscription period
+          Recorded period
         </span>
         <span>
           <b className="striped" />
           Overlapping services
         </span>
-        {spans.some((s) => s.estimated.length > 0) && (
+        {spans.some((s) => s.billingCycle.length) && (
+          <span>
+            <b className="cyclekey" />
+            Billing cycle
+          </span>
+        )}
+        {spans.some((s) =>
+          s.estimated.some((name) => !s.billingCycle.includes(name)),
+        ) && (
           <span>
             <b className="estimatekey" />
-            Estimated from price
+            Price match
           </span>
         )}
         {now && (
@@ -516,10 +770,14 @@ function App({ initialLedger }) {
   );
   const viewing = (ledger.viewing || [])
     .filter((v) => v.date.startsWith(year + "-"))
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .sort((a, b) =>
+      (b.lastPlayedAt || b.date).localeCompare(a.lastPlayedAt || a.date),
+    );
   const names = [
     ...new Map(
-      records.map((p) => [serviceKey(p.service), p.service.trim()]),
+      records
+        .flatMap(coveredServices)
+        .map((name) => [serviceKey(name), name.trim()]),
     ).values(),
   ];
   const days = spans.reduce(
@@ -674,7 +932,7 @@ function App({ initialLedger }) {
               checked={includeEstimates}
               onChange={(e) => setIncludeEstimates(e.target.checked)}
             />
-            Include MapSub estimates in history and totals
+            Include coverage derived from charge dates
           </label>
         )}
         {view === "Viewing" ? (
@@ -696,10 +954,19 @@ function App({ initialLedger }) {
                   </thead>
                   <tbody>
                     {viewing.map((v) => (
-                      <tr key={JSON.stringify([v.date, v.service, v.title])}>
-                        <td>{v.date}</td>
+                      <tr key={viewingKey(v)}>
+                        <td>{v.lastPlayedAt?.replace("T", " ") || v.date}</td>
                         <td>{v.service}</td>
-                        <td>{v.title}</td>
+                        <td>
+                          {v.series && (
+                            <>
+                              {v.series}
+                              {v.season && " · Season " + v.season}
+                              <br />
+                            </>
+                          )}
+                          {v.title}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -711,7 +978,15 @@ function App({ initialLedger }) {
             </section>
           </>
         ) : view === "Timeline" ? (
-          <Timeline {...{ names, spans, start, end, year }} select={setModal} />
+          <>
+            <Timeline
+              key={year}
+              ledger={visibleLedger}
+              {...{ names, spans, start, end, year }}
+              select={setModal}
+            />
+            <IdlePeriods ledger={visibleLedger} {...{ start, end, names }} />
+          </>
         ) : (
           <section className="panel">
             <div className="panelhead">
@@ -750,19 +1025,32 @@ function App({ initialLedger }) {
                           {p.source}
                           {p.estimate && (
                             <details>
-                              <summary>MapSub estimate</summary>
+                              <summary>
+                                {p.estimate.basis === "mapsub"
+                                  ? "Historical price match"
+                                  : "Plan billing cycle"}
+                              </summary>
                               {p.estimate.plan} · {p.estimate.cycle}
                               <br />
-                              Price observed {p.estimate.firstSeen} through{" "}
-                              {p.estimate.lastSeen}
-                              <br />
-                              <a
-                                href={p.estimate.evidenceUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                Pricing evidence
-                              </a>
+                              {p.estimate.basis === "mapsub" ? (
+                                <>
+                                  Price observed {p.estimate.firstSeen} through{" "}
+                                  {p.estimate.lastSeen}
+                                  <br />
+                                  <a
+                                    href={p.estimate.evidenceUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    Pricing evidence
+                                  </a>
+                                </>
+                              ) : (
+                                <>
+                                  One cycle from the charge date. Adjustments
+                                  may cover fewer days.
+                                </>
+                              )}
                             </details>
                           )}
                         </td>

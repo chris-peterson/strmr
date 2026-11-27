@@ -7,6 +7,8 @@ import catalog from "../catalog/mapsub.json" with { type: "json" };
 
 import { netflixDate, netflixPayments } from "./netflix.js";
 
+import { huluCharges } from "./hulu.js";
+
 const ajv = new Ajv();
 export const day = 86400000;
 export const iso = (time) => new Date(time).toISOString().slice(0, 10);
@@ -27,8 +29,8 @@ export function validate(ledger) {
       throw new Error(p.id + " must end after its start.");
     if (
       p.estimate &&
-      (p.estimate.firstSeen > p.start ||
-        p.estimate.lastSeen < p.start ||
+      ((p.estimate.basis === "mapsub" &&
+        (p.estimate.firstSeen > p.start || p.estimate.lastSeen < p.start)) ||
         p.end !== cycleEnd(p.start, p.estimate.cycle))
     ) {
       throw new Error(
@@ -41,7 +43,16 @@ export function validate(ledger) {
     ) {
       throw new Error("Subtotal and tax must equal the total for " + p.id);
     }
+    if (p.services) {
+      const names = new Set(p.services.map(serviceKey));
+      if (names.size !== p.services.length || !names.has(serviceKey(p.service)))
+        throw new Error("Invalid bundle services for " + p.id);
+    }
     ids.add(p.id);
+  }
+  for (const event of ledger.viewing || []) {
+    if (event.lastPlayedAt && !event.lastPlayedAt.startsWith(event.date + "T"))
+      throw new Error("Playback timestamp must match viewing date.");
   }
   return ledger;
 }
@@ -94,7 +105,17 @@ function estimateCharge(period) {
   return { basis: "mapsub", plan, cycle, firstSeen, lastSeen, evidenceUrl };
 }
 
+export const coveredServices = (period) => period.services ?? [period.service];
+
 export function readPaymentHistory(text) {
+  if (/^Date\s+Description\s+Total(?:\s|$)/i.test(text.trim())) {
+    const periods = huluCharges(text).map((p) => {
+      if (!validDate(p.start))
+        throw new Error("Invalid Hulu charge date: " + p.start);
+      return { ...p, end: cycleEnd(p.start, p.estimate.cycle) };
+    });
+    return validate({ version: 1, periods });
+  }
   return validate({ version: 1, periods: netflixPayments(text) });
 }
 
@@ -103,13 +124,28 @@ export function readHistoryFile(text, filename) {
   return /\.csv$/i.test(filename) ? readCsv(text) : readYaml(text);
 }
 
+export async function readHistoryInput(input, filename) {
+  if (/\.pdf$/i.test(filename)) {
+    const { huluReport } = await import("./hulu-report.js");
+    return validate(await huluReport(input));
+  }
+  return readHistoryFile(input, filename);
+}
+
+export const viewingKey = (event) =>
+  JSON.stringify([
+    serviceKey(event.service),
+    event.date,
+    event.title,
+    event.lastPlayedAt,
+    event.series,
+    event.season,
+  ]);
+
 function distinctViewing(rows) {
   const events = new Map();
   for (const event of rows) {
-    events.set(
-      JSON.stringify([serviceKey(event.service), event.date, event.title]),
-      event,
-    );
+    events.set(viewingKey(event), event);
   }
   return [...events.values()];
 }
@@ -189,6 +225,12 @@ export function merge(ledger, incoming) {
     if (
       old &&
       Object.keys({ ...old, ...p }).some((k) => {
+        if (k === "services" && old.services && p.services) {
+          return (
+            old.services.length !== p.services.length ||
+            old.services.some((v) => !p.services.includes(v))
+          );
+        }
         if (k === "estimate" && old.estimate && p.estimate) {
           return Object.keys(p.estimate).some(
             (field) => old.estimate[field] !== p.estimate[field],
@@ -225,17 +267,20 @@ export function history(ledger, start, end) {
       [to, -1],
     ]) {
       if (!changes.has(time)) changes.set(time, []);
-      changes
-        .get(time)
-        .push([serviceKey(p.service), delta, Boolean(p.estimate)]);
+      for (const name of coveredServices(p)) {
+        changes.get(time).push([serviceKey(name), delta, p.estimate?.basis]);
+      }
     }
   }
   const times = [...changes.keys()].sort((a, b) => a - b);
   const counts = new Map();
   const reportedCounts = new Map();
+  const cycleCounts = new Map();
   return times.slice(0, -1).map((time, i) => {
-    for (const [name, delta, estimated] of changes.get(time)) {
-      if (!estimated)
+    for (const [name, delta, basis] of changes.get(time)) {
+      if (basis === "billing-cycle")
+        cycleCounts.set(name, (cycleCounts.get(name) || 0) + delta);
+      if (!basis)
         reportedCounts.set(name, (reportedCounts.get(name) || 0) + delta);
       const count = (counts.get(name) || 0) + delta;
       if (count) counts.set(name, count);
@@ -247,6 +292,9 @@ export function history(ledger, start, end) {
       end: times[i + 1],
       services,
       estimated: services.filter((name) => !reportedCounts.get(name)),
+      billingCycle: services.filter(
+        (name) => !reportedCounts.get(name) && cycleCounts.get(name) > 0,
+      ),
     };
   });
 }
@@ -261,11 +309,13 @@ export function pricePerView(ledger, from, until) {
     const end = Date.parse(period.end);
     const duration = Math.min(until, end) - Math.max(from, start);
     if (duration <= 0) continue;
-    const service = serviceKey(period.service);
-    const key = JSON.stringify([service, period.currency]);
+    const label = period.services
+      ? period.services.join(" + ")
+      : period.service;
+    const key = JSON.stringify([serviceKey(label), period.currency]);
     if (!groups.has(key))
       groups.set(key, {
-        service: period.service,
+        service: label,
         currency: period.currency,
         costMinor: 0,
         views: 0,
@@ -278,14 +328,20 @@ export function pricePerView(ledger, from, until) {
   const results = [];
   for (const group of groups.values()) {
     const { periods, ...row } = group;
-    const name = serviceKey(row.service);
+
     for (const event of ledger.viewing || []) {
       const date = Date.parse(event.date);
       if (
-        serviceKey(event.service) === name &&
         from <= date &&
         date < until &&
-        periods.some((p) => p.start <= event.date && event.date < p.end)
+        periods.some(
+          (p) =>
+            p.start <= event.date &&
+            event.date < p.end &&
+            coveredServices(p).some(
+              (name) => serviceKey(name) === serviceKey(event.service),
+            ),
+        )
       )
         row.views++;
     }
@@ -295,4 +351,57 @@ export function pricePerView(ledger, from, until) {
     });
   }
   return results;
+}
+
+// An idle stretch must stay within one continuous coverage window. Deduplicate
+// viewing days so repeated plays on a date have the same effect as one play.
+export function inactivity(ledger, until, minimumDays) {
+  const seen = new Map();
+  for (const view of ledger.viewing || []) {
+    const key = serviceKey(view.service);
+    if (!seen.has(key)) seen.set(key, new Set());
+    seen.get(key).add(Date.parse(view.date));
+  }
+  const coverage = new Map();
+  for (const p of ledger.periods) {
+    const start = Date.parse(p.start),
+      end = Math.min(until, p.end ? Date.parse(p.end) : until);
+    if (start >= end) continue;
+    for (const name of coveredServices(p)) {
+      const key = serviceKey(name);
+      if (!coverage.has(key)) coverage.set(key, { name, windows: [] });
+      coverage.get(key).windows.push({ start, end });
+    }
+  }
+  const gaps = [];
+  for (const [key, { name, windows }] of coverage) {
+    if (!seen.has(key)) continue;
+    const plays = [...seen.get(key)].sort((a, b) => a - b);
+    const continuous = [];
+    for (const window of windows.sort((a, b) => a.start - b.start)) {
+      const prior = continuous.at(-1);
+      if (prior && prior.end >= window.start)
+        prior.end = Math.max(prior.end, window.end);
+      else continuous.push({ ...window });
+    }
+    let i = 0;
+    for (const window of continuous) {
+      let cursor = Math.max(window.start, plays[0]);
+      while (i < plays.length && plays[i] < window.start) i++;
+      while (i < plays.length && plays[i] < window.end) {
+        const play = plays[i++];
+        if ((play - cursor) / day >= minimumDays)
+          gaps.push({ name, start: cursor, end: play });
+        cursor = play + day;
+      }
+      if ((window.end - cursor) / day >= minimumDays)
+        gaps.push({ name, start: cursor, end: window.end });
+    }
+  }
+  return gaps.sort(
+    (a, b) =>
+      b.end - b.start - (a.end - a.start) ||
+      b.end - a.end ||
+      a.name.localeCompare(b.name),
+  );
 }

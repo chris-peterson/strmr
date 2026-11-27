@@ -13,7 +13,7 @@ import { resolve, dirname, basename } from "node:path";
 import { zipSync, strToU8 } from "fflate";
 import {
   readYaml,
-  readHistoryFile,
+  readHistoryInput,
   writeYaml,
   empty,
   merge,
@@ -33,7 +33,10 @@ async function run([command, file, target, ...extra]) {
   const pasted = command === "import" && file === "-";
   const source = pasted
     ? await text(process.stdin)
-    : await readFile(file, "utf8");
+    : await readFile(
+        file,
+        command === "import" && /\.pdf$/i.test(file) ? null : "utf8",
+      );
   if (command === "validate") {
     const ledger = readYaml(source);
     console.log(
@@ -68,7 +71,7 @@ async function run([command, file, target, ...extra]) {
     console.log(archive);
     return;
   }
-  const incoming = readHistoryFile(
+  const incoming = await readHistoryInput(
     source,
     pasted ? "payment-history.txt" : file,
   );

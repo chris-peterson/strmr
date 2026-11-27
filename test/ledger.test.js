@@ -8,6 +8,7 @@ import { unzipSync, strFromU8 } from "fflate";
 import {
   day,
   history,
+  inactivity,
   pricePerView,
   readCsv,
   readHistoryFile,
@@ -206,4 +207,135 @@ test("price per view prorates across years and counts views once within priced c
     Date.parse("2024-02-01"),
   );
   assert.equal(jan[0].perViewMinor, 150);
+});
+
+test("Hulu charges preserve bundle labels, same-day adjustments and totals across repeat imports", () => {
+  const table =
+    "Date\tDescription\tTotal\r\nJanuary 31, 2024\tDisney+, Hulu Bundle Premium (Monthly)\t$12.34\r\nJanuary 31, 2024\tDisney+, Hulu, ESPN Select Bundle Premium (Monthly)\t$2.00\r\nMarch 15, 2024\tHulu Premium (Monthly)\t$8.00";
+  const ledger = readHistoryFile(table, "charges.txt");
+  const [bundle, extra, direct] = ledger.periods;
+  assert.equal(bundle.start, "2024-01-31");
+  assert.equal(bundle.end, "2024-02-29");
+  assert.equal(extra.estimate.basis, "billing-cycle");
+  assert.equal(
+    extra.estimate.plan,
+    "Disney+, Hulu, ESPN Select Bundle Premium (Monthly)",
+  );
+  assert.equal(direct.amountMinor, 800);
+  assert.deepEqual(merge(readYaml(writeYaml(ledger)), ledger), ledger);
+  const spans = history(
+    ledger,
+    Date.parse("2024-01-31"),
+    Date.parse("2024-03-16"),
+  );
+  assert.deepEqual(
+    spans.map((s) => s.services.length),
+    [3, 0, 1],
+  );
+  assert.deepEqual(spans[0].estimated, spans[0].services);
+  ledger.viewing = [
+    { service: "Disney+", date: "2024-02-01", title: "An episode" },
+  ];
+  const costs = pricePerView(ledger, -Infinity, Infinity);
+  assert.equal(
+    costs.reduce((sum, r) => sum + r.costMinor, 0),
+    2234,
+  );
+  assert.equal(costs[0].views, 1);
+  for (const bad of [
+    table.replace("January 31", "February 30"),
+    table.replace("$2.00", "Refund"),
+    table.replace("Hulu Premium (Monthly)", "Unknown plan"),
+    table + "\nApril 1, 2024",
+  ]) {
+    assert.throws(() => readHistoryFile(bad, "history.txt"));
+  }
+});
+
+test("Hulu PDF table keeps wrapped cells, movies, and distinct same-day timestamps", async () => {
+  const { watchPage } = await import("../src/hulu-report.js");
+  const cell = (x, y, str) => ({ transform: [1, 0, 0, 1, x, y], str });
+  const heading = [
+    "Episode Name",
+    "Series Name",
+    "Season",
+    "Last Played At",
+  ].map((v, i) => cell(i * 100, 700, v));
+  const rows = [
+    ...heading,
+    cell(0, 680, "Long"),
+    cell(0, 669, "episode"),
+    cell(100, 680, "Example series"),
+    cell(200, 680, "3"),
+    cell(300, 680, "01 Nov 2026 22:01:02"),
+    cell(0, 640, "A movie"),
+    cell(100, 640, "N/A"),
+    cell(200, 640, "N/A"),
+    cell(300, 640, "01 Nov 2026 22:50:00"),
+    cell(0, 610, "A movie"),
+    cell(100, 610, "N/A"),
+    cell(200, 610, "N/A"),
+    cell(300, 610, "01 Nov 2026 23:00:00"),
+  ];
+  const viewing = watchPage(rows);
+  assert.equal(viewing[0].title, "Long episode");
+  assert.equal(viewing[0].series, "Example series");
+  assert.equal(viewing[0].season, "3");
+  assert.equal(viewing[0].lastPlayedAt, "2026-11-01T22:01:02");
+  assert.equal(viewing[1].series, undefined);
+  const ledger = { version: 1, periods: [], viewing };
+  assert.deepEqual(merge(ledger, readYaml(writeYaml(ledger))), ledger);
+  assert.throws(() => watchPage(rows.slice(1)), /headings/);
+  assert.throws(
+    () => watchPage([...heading, cell(0, 640, "missing timestamp")]),
+    /timestamps/,
+  );
+});
+
+test("inactivity joins contiguous entitlements and breaks on a play or lapse", () => {
+  const period = (start, end, service = "Hulu") => ({ service, start, end });
+  const ledger = {
+    periods: [
+      period("2024-01-01", "2024-02-01"),
+      { ...period("2024-02-01", "2024-03-01"), services: ["Hulu", "Disney+"] },
+      period("2024-03-10", null),
+    ],
+    viewing: ["2024-01-02", "2024-01-02", "2024-02-03"].map((date) => ({
+      service: "hulu",
+      date,
+    })),
+  };
+  const gaps = inactivity(ledger, Date.parse("2024-04-09"), 30);
+  assert.deepEqual(
+    gaps.map((g) => [
+      g.name,
+      new Date(g.start).toISOString().slice(0, 10),
+      (g.end - g.start) / day,
+    ]),
+    [
+      ["Hulu", "2024-01-03", 31],
+      ["Hulu", "2024-03-10", 30],
+    ],
+  );
+});
+test("charge-based coverage prefers explicit dates then a plan's billing cycle", () => {
+  const rows = ["mapsub", "billing-cycle", null].map((basis, i) => ({
+    service: "A",
+    start: "2024-02-01",
+    end: ["2024-02-04", "2024-02-03", "2024-02-02"][i],
+    estimate: basis ? { basis } : undefined,
+  }));
+  const spans = history(
+    { periods: rows },
+    Date.parse("2024-02-01"),
+    Date.parse("2024-02-04"),
+  );
+  assert.deepEqual(
+    spans.map((s) => [s.billingCycle, s.estimated]),
+    [
+      [[], []],
+      [["a"], ["a"]],
+      [[], ["a"]],
+    ],
+  );
 });

@@ -34,6 +34,19 @@
             "type": "string",
             "minLength": 1,
             "pattern": "\\S"
+          },
+          "lastPlayedAt": {
+            "type": "string",
+            "description": "Local timestamp as printed by the provider; timezone unspecified.",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$"
+          },
+          "series": {
+            "type": "string",
+            "minLength": 1
+          },
+          "season": {
+            "type": "string",
+            "minLength": 1
           }
         }
       }
@@ -88,7 +101,14 @@
           "pattern": "^[A-Z]{3}$"
         },
         "estimate": {
-          "$ref": "#/definitions/estimate"
+          "oneOf": [
+            {
+              "$ref": "#/definitions/estimate"
+            },
+            {
+              "$ref": "#/definitions/cycleEstimate"
+            }
+          ]
         },
         "chargedOn": {
           "$ref": "#/definitions/date"
@@ -102,6 +122,18 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 9007199254740991
+        },
+        "services": {
+          "description": "All services covered by this single bundle charge, including the billing service.",
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "pattern": "\\S"
+          }
         }
       },
       "dependencies": {
@@ -146,6 +178,23 @@
         "lastSeen",
         "evidenceUrl"
       ]
+    },
+    "cycleEstimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basis", "plan", "cycle"],
+      "properties": {
+        "basis": {
+          "const": "billing-cycle"
+        },
+        "plan": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cycle": {
+          "enum": ["monthly", "annual"]
+        }
+      }
     }
   }
 }

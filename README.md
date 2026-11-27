@@ -1,12 +1,13 @@
 # strmr.
 
-Explore a streaming subscription history on a shared calendar. Select a coverage bar for its dates, or a striped overlap segment for the services active together. The Records tab shows the source periods and any recorded charges.
+Explore a streaming subscription history on a shared calendar. The Months column counts each calendar month with at least one covered day for that service in the selected year, through today. Overlapping bills and bundles count once per month. Hover over a calendar day or choose a date to see active services, imported views, allocated daily cost and cost per covered view. Select a coverage bar for its dates, or a striped overlap segment for the services active together. The Records tab shows the source periods and any recorded charges.
 
 ## Supported services
 
 | Service | Payment history | Viewing history |
 | --- | --- | --- |
 | [Netflix](#netflix-account-history) | Paste the English US payment table or import it as a `.txt` file to record membership dates, charges and tax in USD. | Import `NetflixViewingHistory.csv` with US dates to see titles watched by day. |
+| [Hulu](#hulu-charge-history) | Import the US charge table for Hulu Premium and the monthly bundles listed below. | Import the Watch History table from the Hulu Personal Information Report PDF. [Request a report](#hulu-privacy-report) |
 
 ## Run locally
 
@@ -14,9 +15,9 @@ With Node 22.12 or later, run `npm ci` and `npm run dev`. Open the printed local
 
 ## Import through Codex
 
-In this checkout, ask Codex to **import my Netflix export** and give it the file path, or paste your Netflix payment history. You can also invoke `$strmr-import` explicitly. The project skill merges records into `data/history.yml`, validates the result and reports how many records it added. Reload an already open local dashboard to see new imports.
+In this checkout, ask Codex to **import my Netflix export** and give it the file path, or paste your Hulu or Netflix payment history. You can also invoke `$strmr-import` explicitly. The project skill merges records into `data/history.yml`, validates the result and reports how many records it added. Reload an already open local dashboard to see new imports.
 
-The same workflow is available directly through `node scripts/ledger.mjs import "<input path>" data/history.yml`. Use `-` as the input for pasted US Netflix payment history on standard input.
+The same workflow is available directly through `node scripts/ledger.mjs import "<input path>" data/history.yml`. Use `-` as the input for pasted US Hulu or Netflix payment history on standard input.
 
 **Import data** in the browser opens a temporary copy. Use **Export YAML** to save that copy. Production builds in `dist/` start empty and can be served from a subdirectory. Personal data stays in the git-ignored project directory.
 
@@ -69,7 +70,7 @@ When a statement gives a service, date and amount, import a CSV with `service,da
 
 strmr matches a single base plan by service, currency, exact list price and charge date within MapSub’s inclusive observation dates. Prices cover US plans and Netflix UK in GBP. An amount may include tax, a promotion or an add-on. For a missing or ambiguous match, the import identifies the record and asks for its cycle or explicit coverage dates. The whole batch must validate before import. A supplied cycle or coverage window takes precedence.
 
-Estimated periods have a dashed outline on the timeline. In Records, expand **MapSub estimate** to see the matched plan, cycle, price observation dates and evidence. Clear **Include MapSub estimates** to compare overlap using the other records alone. Exported YAML retains the match, so a future catalog refresh leaves saved histories reproducible.
+Periods inferred from a price match have a dashed outline on the timeline. In Records, expand **Historical price match** to see the matched plan, cycle, price observation dates and evidence. Clear **Include coverage derived from charge dates** to compare overlap using the other records alone. Exported YAML retains the match, so a future catalog refresh leaves saved histories reproducible.
 
 Historical list prices are adapted from [MapSub’s subscription price histories](https://mapsub.com/data/) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The bundled subset selects streaming plans and converts prices to minor units. Observation dates describe the available price evidence. Each estimate assumes one billing cycle starting on the charge date. The app performs all matching locally.
 
@@ -81,12 +82,35 @@ For a monthly catalog refresh at 03:00 on the first day of each month, add this 
 
 Refresh the bundled catalog with `node scripts/mapsub.mjs`, or pass the path to a downloaded MapSub `all.csv`. Rebuild the site after refreshing.
 
+## Hulu charge history
+
+Copy the **Date**, **Description**, and **Total** headers and all charge rows from [Hulu charge history](https://secure.hulu.com/commerce/charges?view=history). Paste them into Codex with `$strmr-import`, use the browser payment-history input, or import the text as a `.txt` file.
+
+The US importer recognizes Hulu Premium (Monthly) and monthly Disney+ and Hulu bundles with Disney+ and Hulu alone, ESPN Select, or HBO Max (No Ads). Each row keeps its charge date, full plan label and USD total. Each bundle contributes one charge and a timeline entry for each included service. Price per view groups a bundle’s cost and covered views together.
+
+Hulu’s table supplies the billing cycle. Its outlined **Billing cycle** bars count one calendar month from the charge date. Plan switches and prorated charges can shorten the actual coverage. Same-day charges with different plans or totals are retained, and missing renewals leave gaps.
+
+## Hulu privacy report
+
+1. Sign in to Hulu, open **Account → Privacy**, and select **Request Report**. [Hulu account privacy](https://secure.hulu.com/account/privacy)
+2. Follow the verification emails through to the report portal. The flow can involve several emails, CAPTCHAs, one-time codes, and another sign-in. When the report is ready, download the Personal Information Report PDF.
+3. Leave the PDF in Downloads and give its path to `$strmr-import`. The CLI equivalent is `node scripts/ledger.mjs import "/path/to/rtk-report.pdf" data/history.yml`. The browser file picker also accepts the PDF for a temporary preview.
+
+strmr reads the **Watch History** table and its continuation pages locally. It keeps the episode or movie title, series, season, and **Last Played At** timestamp as printed. Each distinct dated playback observation counts once, including on repeat imports. Hulu describes the report as covering the preceding twelve months with exceptions. Last-played observations can undercount rewatches, so price per view reflects the imported rows. Membership periods and amounts come from the separate charge-history import. Personal, payment-method, device, and login details stay outside the ledger.
+
 ## Netflix account history
 
-In **Import data**, choose **Paste Netflix payment history (USD)** and paste the English US payment table, including the total and tax breakdown for each membership row. You can also import the copied text as a `.txt` file. The importer records the payment date, subtotal, tax and total, and converts Netflix's inclusive last covered day to the ledger's exclusive end. Each listed payment produces one period. Card identifiers and account-page text are discarded.
+In **Import data**, choose **Paste Hulu or Netflix payment history (USD)** and paste the English US payment table, including the total and tax breakdown for each membership row. You can also import the copied text as a `.txt` file. The importer records the payment date, subtotal, tax and total, and converts Netflix's inclusive last covered day to the ledger's exclusive end. Each listed payment produces one period. Card identifiers and account-page text are discarded.
 
 Open `NetflixViewingHistory.csv` through the same file picker or CLI. The importer recognizes the `Title,Date` columns in the US export and keeps the titles and dates in the ledger's optional `viewing` array. The **Viewing** tab displays them by year. Viewing activity can predate the available bills and is excluded from paid coverage and overlap totals. Re-imports merge by service, title and day.
 
 ## Price per view
 
 In **Viewing**, select **Month** for each month of the selected year, **Year** for the year total, or **All time** for all recorded years. Each row divides the service’s cost by its imported viewing entries during priced coverage. Charges with a known amount and end date are allocated evenly across their covered days through today. A billing period that crosses a month or year boundary contributes proportionally to each side. Each currency has its own row. A dash means there were no recorded views during that priced coverage.
+
+
+## Inactivity
+
+The timeline lists stretches of 30, 60 or 90 consecutive covered days with no imported views. Streaks start no earlier than the service’s first imported viewing day. Active days from adjacent bills and bundles are combined, and a lapse in coverage breaks the streak. A viewing day resets the count. The selected year shows full streaks that intersect it, through today. The coverage filter also applies to inactivity.
+
+The result depends on which profiles and dates your viewing exports cover. Services without viewing data are listed separately. The daily inspector counts all viewing entries on the selected date; its cost breakdown uses only views during priced coverage and keeps bundle charges together.

@@ -1,5 +1,6 @@
 :root {
   color-scheme: dark;
+  scrollbar-gutter: stable;
   font-family: Inter, "Helvetica Neue", Arial, sans-serif;
   color: #f2f0ed;
   background: #141519;
@@ -285,11 +286,10 @@ dialog p {
 }
 .chart {
   min-width: 760px;
-  padding-right: 22px;
 }
 .chartrow {
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
+  grid-template-columns: 180px minmax(0, 1fr) 74px;
   min-height: 53px;
   border-bottom: 1px solid #323238;
 }
@@ -305,6 +305,15 @@ dialog p {
   font-size: 0.72rem;
   letter-spacing: 0.075em;
   font-weight: 600;
+}
+.month-count {
+  align-content: center;
+  text-align: right;
+  padding-right: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.axis .month-count {
+  text-transform: uppercase;
 }
 .axis > div:first-child {
   align-content: center;
@@ -497,7 +506,7 @@ dialog p[role="alert"] {
     font-size: 2.25rem;
   }
   .chartrow {
-    grid-template-columns: 145px 1fr;
+    grid-template-columns: 145px minmax(0, 1fr) 64px;
   }
   .chartrow > div:first-child {
     padding-left: 14px;
@@ -540,7 +549,23 @@ dialog p[role="alert"] {
   .statlabel svg {
     display: none;
   }
+  .top {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-block: 8px;
+  }
+  .actions {
+    gap: 4px;
+  }
+  .actions button {
+    gap: 4px;
+  }
+  .stat {
+    min-width: 0;
+  }
   .viewbar {
+    flex-wrap: wrap;
+    gap: 6px;
     margin-top: 18px;
   }
   .panelhead,
@@ -562,12 +587,15 @@ dialog p[role="alert"] {
     z-index: 3;
     background: #1e1f24;
   }
+  .viewbar button {
+    padding-inline: 0.55rem;
+  }
   .yearcontrol {
     height: 32px;
   }
 }
 
-.bar.estimated,
+.bar.price,
 .estimatekey {
   background: transparent;
   border: 2px dashed var(--ink, #b7adb1);
@@ -586,4 +614,137 @@ dialog p[role="alert"] {
 }
 td summary {
   cursor: pointer;
+}
+
+.chart .track::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  top: 0;
+  bottom: 0;
+  inset-inline: 0;
+  background: linear-gradient(#f6e5c9, #f6e5c9) var(--selected) center / 2px
+    100% no-repeat;
+}
+.bar.cycle,
+.cyclekey {
+  background: color-mix(in srgb, var(--ink, #b7adb1) 26%, #25252a);
+  border: 2px solid var(--ink, #b7adb1);
+}
+.cyclekey {
+  width: 19px;
+  height: 10px;
+  border-radius: 2px;
+}
+.day-inspector {
+  border-top: 1px solid var(--line);
+  padding: 15px 24px;
+  background: #24252b;
+}
+.day-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+.day-heading h3 {
+  margin: 0;
+  font-size: 1.12rem;
+}
+.day-heading input,
+.idle-panel select {
+  background: #191a1f;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.4em;
+  color: inherit;
+}
+.day-inspector p,
+.daily-services small {
+  color: var(--muted);
+}
+.day-inspector strong {
+  color: #f0ece9;
+}
+.day-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1.25rem;
+  margin-top: 12px;
+}
+.day-coverage,
+.day-charges {
+  height: 8.25rem;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+.day-charges table {
+  table-layout: fixed;
+  min-width: 30rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+.day-charges th:first-child {
+  width: 36%;
+}
+.day-charges th {
+  position: sticky;
+  top: 0;
+  background: #24252b;
+}
+.daily-services {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.daily-services li {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.daily-services small {
+  display: block;
+}
+.day-inspector td,
+.day-inspector th {
+  padding: 6px 12px 6px 0;
+}
+.idle-panel {
+  margin-top: 1rem;
+}
+
+@media (max-width: 760px) {
+  .day-inspector {
+    padding: 14px 16px;
+  }
+  .day-columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .day-coverage {
+    height: 6rem;
+  }
+  .day-charges {
+    height: 7rem;
+  }
+  .daily-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .viewbar nav svg {
+    display: none;
+  }
+  .day-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
 }
