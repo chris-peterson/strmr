@@ -20,14 +20,16 @@ import {
 } from "../src/ledger.js";
 
 async function run([command, file, target, ...extra]) {
+  const monthlyPayPal = command === "import" && extra.length === 1 &&
+    extra[0] === "--paypal-monthly" && (file === "-" || /\.txt$/i.test(file));
   if (
     !["import", "backup", "validate"].includes(command) ||
     !file ||
-    extra.length ||
+    (extra.length && !monthlyPayPal) ||
     (command === "validate" ? target : !target)
   ) {
     throw new Error(
-      "Usage: ledger validate LEDGER | import INPUT_OR_- LEDGER | backup LEDGER DIRECTORY",
+      "Usage: ledger validate LEDGER | import INPUT_OR_- LEDGER [--paypal-monthly] | backup LEDGER DIRECTORY",
     );
   }
   const pasted = command === "import" && file === "-";
@@ -74,6 +76,7 @@ async function run([command, file, target, ...extra]) {
   const incoming = await readHistoryInput(
     source,
     pasted ? "payment-history.txt" : file,
+    { monthlyPayPal },
   );
   await mkdir(dirname(target), { recursive: true, mode: 0o700 });
   const lockPath = resolve(dirname(target), "." + basename(target) + ".lock");
@@ -90,9 +93,12 @@ async function run([command, file, target, ...extra]) {
     }
     const result = merge(ledger, incoming);
     const addedPeriods = result.periods.length - ledger.periods.length;
+    const corrected = result.periods.slice(0, ledger.periods.length).filter((p, i) =>
+      p.refunded !== ledger.periods[i].refunded || p.lastCoveredOn !== ledger.periods[i].lastCoveredOn
+    ).length;
     const addedViewing =
       (result.viewing?.length || 0) - (ledger.viewing?.length || 0);
-    if (!exists || addedPeriods || addedViewing) {
+    if (!exists || addedPeriods || addedViewing || corrected) {
       await writeFile(tmp, writeYaml(result), { mode: 0o600, flag: "wx" });
       await rename(tmp, target);
     }
@@ -103,6 +109,7 @@ async function run([command, file, target, ...extra]) {
         addedViewing +
         " viewing entries.",
     );
+    if (corrected) console.log("Updated " + corrected + " billing records.");
     console.log(
       result.periods.length +
         " subscription records and " +

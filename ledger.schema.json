@@ -113,6 +113,14 @@
         "chargedOn": {
           "$ref": "#/definitions/date"
         },
+        "refunded": {
+          "description": "The charge was fully reversed and this billing period was canceled.",
+          "const": true
+        },
+        "lastCoveredOn": {
+          "description": "Confirmed final covered day when coverage ended before the billed period expired.",
+          "$ref": "#/definitions/date"
+        },
         "taxMinor": {
           "type": "integer",
           "minimum": 0,
@@ -134,9 +142,18 @@
             "maxLength": 100,
             "pattern": "\\S"
           }
+        },
+        "nonVideoServices": {
+          "description": "Other services included in the bill when its video portion is unknown.",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "pattern": "\\S" }
         }
       },
       "dependencies": {
+        "nonVideoServices": ["amountMinor"],
+        "refunded": ["amountMinor"],
         "amountMinor": ["currency"],
         "currency": ["amountMinor"],
         "estimate": ["amountMinor", "currency"],

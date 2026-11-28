@@ -1,6 +1,8 @@
 # strmr.
 
-Explore a streaming subscription history on a shared calendar. The Months column counts each calendar month with at least one covered day for that service in the selected year, through today. Overlapping bills and bundles count once per month. Hover over a calendar day or choose a date to see active services, imported views, allocated daily cost and cost per covered view. Select a coverage bar for its dates, or a striped overlap segment for the services active together. The Records tab shows the source periods and any recorded charges.
+The dashboard opens to year to date (YTD), from January 1 through today. A prior-year button appears for each year with subscription coverage or imported views. Select it to see that calendar year across Timeline, Records and Viewing. The Months column counts each calendar month with at least one covered day for that service in the selected year, through today. Overlapping bills and bundles count once per month. **Days left** counts the days remaining on each service’s latest bill, including today for YTD or December 31 for a prior year. The last covered day counts as one, and an expired bill shows zero. Hover over the count for the end date. The price-per-view panel below the timeline shows the selected period’s allocated costs and covered views. Select a coverage bar for its dates and billing source. The Records tab shows the source periods and any recorded charges.
+
+Bookmark the dashboard after choosing a year or tab. For example, `?year=2025&view=records` opens the 2025 subscription records, and `?year=ytd` follows the current year. The URL also preserves the coverage filter, monthly viewing breakdown and inactivity threshold.
 
 ## Supported services
 
@@ -8,16 +10,20 @@ Explore a streaming subscription history on a shared calendar. The Months column
 | --- | --- | --- |
 | [Netflix](#netflix-account-history) | Paste the English US payment table or import it as a `.txt` file to record membership dates, charges and tax in USD. | Import `NetflixViewingHistory.csv` with US dates to see titles watched by day. |
 | [Hulu](#hulu-charge-history) | Import the US charge table for Hulu Premium and the monthly bundles listed below. | Import the Watch History table from the Hulu Personal Information Report PDF. [Request a report](#hulu-privacy-report) |
+| [Peacock](#peacock-account-history) | Paste US Premium Plus Monthly or Apple TV and Peacock Premium Plus payments, or import the copied rows as a `.txt` file. | Import dated titles in a strmr viewing CSV. |
+| [Paramount+](#paramount-account-history) | Paste US PayPal activity for a confirmed monthly plan, or import receipts in a strmr billing CSV. | Import dated titles in a strmr viewing CSV. |
+| [Crunchyroll](https://www.crunchyroll.com/payments/history) | Paste completed US Fan (Monthly) payment rows or import them as a text file. Each charge starts one monthly cycle. | Import dated titles in a strmr viewing CSV. |
+| Apple TV | Import Apple Services bundle payments using YAML. List the other subscriptions in `nonVideoServices` when the video share is unknown. Monthly spend includes the full payment. Allocated video cost and cost per view exclude it. | Import dated titles in a strmr viewing CSV when available. |
 
 ## Run locally
 
-With Node 22.12 or later, run `npm ci` and `npm run dev`. Open the printed localhost URL. The dashboard loads the private project ledger from `data/history.yml` on each page load and starts empty if the file is missing.
+With Node 22.12 or later, run `npm ci` and `npm run dev`. Open the printed localhost URL. The dashboard loads your history from `data/history.yml` on each page load and starts empty if the file is missing.
 
 ## Import through Codex
 
-In this checkout, ask Codex to **import my Netflix export** and give it the file path, or paste your Hulu or Netflix payment history. You can also invoke `$strmr-import` explicitly. The project skill merges records into `data/history.yml`, validates the result and reports how many records it added. Reload an already open local dashboard to see new imports.
+In this checkout, ask Codex to **import my Netflix export** and give it the file path, or paste your Crunchyroll, Hulu, Netflix or Peacock payment history. You can also invoke `$strmr-import` explicitly. The project skill merges records into `data/history.yml`, validates the result and reports how many records it added. Reload an already open local dashboard to see new imports.
 
-The same workflow is available directly through `node scripts/ledger.mjs import "<input path>" data/history.yml`. Use `-` as the input for pasted US Hulu or Netflix payment history on standard input.
+The same workflow is available directly through `node scripts/ledger.mjs import "<input path>" data/history.yml`. Use `-` as the input for pasted US Crunchyroll, Hulu, Netflix or Peacock payment history on standard input.
 
 **Import data** in the browser opens a temporary copy. Use **Export YAML** to save that copy. Production builds in `dist/` start empty and can be served from a subdirectory. Personal data stays in the git-ignored project directory.
 
@@ -35,15 +41,15 @@ Git ignores both `data/` and `backups/`.
 
 [The v1 JSON Schema](ledger.schema.json) describes the YAML ledger. Each period has a stable ID, service name, source, inclusive start date and exclusive end date. An explicit null end means ongoing. Dates are calendar days. The validator also checks real dates, unique IDs and positive-length periods. Optional charge amounts use whole currency minor units paired with a three-letter currency code.
 
-The chart clips history at today and the selected year. It counts each distinct service once per day, ignoring case and surrounding whitespace. Two subscriptions that hand off on the same day contribute zero overlap days. Different spellings such as HBO Max and Max remain distinct unless you give them the same service name.
+The chart clips history at today and the selected year. It counts each distinct service once per day, ignoring case and surrounding whitespace. The timeline shows the average and median number of covered video services per calendar day in the selected window. Each day counts equally, including days with zero recorded coverage. Different spellings such as HBO Max and Max remain distinct unless you give them the same service name.
 
 Import one of these formats:
 
 - Versioned YAML for complete ledgers or individual batches.
 - Coverage CSV with `service,start,end`. Include the end header and leave its value blank for ongoing coverage.
-- Billing CSV with `service,date,cycle`. Use the charge date as the first covered day and specify `monthly` or `annual`. Coverage ends after one cycle, clamped to the last day of the target month. For trials, refunds, prorated charges or custom billing windows, supply explicit coverage dates instead.
+- Billing CSV with `service,date,cycle`. Use the charge date as the first covered day and specify `monthly` or `annual`. Coverage ends after one cycle, clamped to the last day of the target month. Use explicit coverage dates for a partial or custom billing period.
 
-Normalize provider exports to one of the CSV layouts. Both accept optional `id,source,amountMinor,currency` columns. Source defaults to `billing`. Dates use YYYY-MM-DD. Use a stable source ID when available. The fallback ID combines the normalized service and start date. Merging skips identical records and rejects conflicting IDs.
+The billing and coverage CSV layouts accept optional `id,source,amountMinor,currency` columns. Source defaults to `billing`. Dates use YYYY-MM-DD. Use a stable source ID when available. The fallback ID combines the normalized service and start date. Merging skips identical records and rejects conflicting IDs.
 
 ## Scheduled ZIP backups
 
@@ -64,15 +70,15 @@ Each run validates the on-disk YAML and archives it as `history.yml` inside a un
 
 Run `npm test` to check interval boundaries, import validation, repeat imports and ZIP recovery.
 
-## Estimate coverage from a charge
+## Coverage from a charge
 
 When a statement gives a service, date and amount, import a CSV with `service,date,amountMinor,currency`. The same importer runs in the browser and the CLI.
 
 strmr matches a single base plan by service, currency, exact list price and charge date within MapSub’s inclusive observation dates. Prices cover US plans and Netflix UK in GBP. An amount may include tax, a promotion or an add-on. For a missing or ambiguous match, the import identifies the record and asks for its cycle or explicit coverage dates. The whole batch must validate before import. A supplied cycle or coverage window takes precedence.
 
-Periods inferred from a price match have a dashed outline on the timeline. In Records, expand **Historical price match** to see the matched plan, cycle, price observation dates and evidence. Clear **Include coverage derived from charge dates** to compare overlap using the other records alone. Exported YAML retains the match, so a future catalog refresh leaves saved histories reproducible.
+Periods inferred from a price match have a dashed outline on the timeline. In Records, expand **Historical price match** to see the matched plan, cycle, price observation dates and evidence. Clear **Include coverage derived from charge dates** to calculate daily counts using the other records alone. Exported YAML retains the match, so a future catalog refresh leaves saved histories reproducible.
 
-Historical list prices are adapted from [MapSub’s subscription price histories](https://mapsub.com/data/) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The bundled subset selects streaming plans and converts prices to minor units. Observation dates describe the available price evidence. Each estimate assumes one billing cycle starting on the charge date. The app performs all matching locally.
+Historical list prices are adapted from [MapSub’s subscription price histories](https://mapsub.com/data/) under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The bundled subset selects streaming plans and converts prices to minor units. Observation dates describe the available price evidence. Each price match supplies one billing cycle starting on the charge date. The app performs all matching locally.
 
 For a monthly catalog refresh at 03:00 on the first day of each month, add this entry to your crontab using your absolute paths.
 
@@ -100,17 +106,60 @@ strmr reads the **Watch History** table and its continuation pages locally. It k
 
 ## Netflix account history
 
-In **Import data**, choose **Paste Hulu or Netflix payment history (USD)** and paste the English US payment table, including the total and tax breakdown for each membership row. You can also import the copied text as a `.txt` file. The importer records the payment date, subtotal, tax and total, and converts Netflix's inclusive last covered day to the ledger's exclusive end. Each listed payment produces one period. Card identifiers and account-page text are discarded.
+In **Import data**, choose **Paste payment history (USD)** and paste the English US payment table, including the total and tax breakdown for each membership row. You can also import the copied text as a `.txt` file. The importer records the payment date, subtotal, tax and total, and converts Netflix's inclusive last covered day to the ledger's exclusive end. Each listed payment produces one period. Card identifiers and account-page text are discarded.
 
-Open `NetflixViewingHistory.csv` through the same file picker or CLI. The importer recognizes the `Title,Date` columns in the US export and keeps the titles and dates in the ledger's optional `viewing` array. The **Viewing** tab displays them by year. Viewing activity can predate the available bills and is excluded from paid coverage and overlap totals. Re-imports merge by service, title and day.
+Open `NetflixViewingHistory.csv` through the same file picker or CLI. The importer recognizes the `Title,Date` columns in the US export and keeps the titles and dates in the ledger's optional `viewing` array. The **Viewing** tab groups playback cards by month in the selected year. The service badges cycle through neutral, included, and excluded. Including multiple services shows entries from any of them. The URL saves the selection, which applies only to the viewing grid. Each card shows the service, title, available episode details and a link to search IMDb for the film or series. Viewing activity can predate the available bills and does not add paid coverage. Re-imports merge by service, title and day.
+
+## Peacock account history
+
+For direct Peacock billing, open **Account → Plans & Payment → View Payment History**. For a subscription billed through another provider, use that provider’s receipts. [Peacock payment history guide](https://www.peacocktv.com/help/article/how-do-i-view-my-payment-history-or-upcoming-payments)
+
+Copy the rows from the [Peacock payment history page](https://www.peacocktv.com/account/plans/payment-history). The CLI and browser recognize the four lines per payment: plan, US date, payment method and USD total. The import keeps zero-dollar entries and discards payment method details. The timeline projects one month of coverage from each charge date. The Apple TV and Peacock Premium Plus plan covers both services under one charge. [Peacock bundle details](https://www.peacocktv.com/bundle/apple-tv)
+
+For watch history, use the access-request link for your location under **Your Rights**. Ask for Peacock viewing events with titles, profiles and playback dates or timestamps in a machine-readable format. The fields and history available depend on the response. [NBCUniversal privacy policy](https://www.nbcuniversal.com/privacy-english)
+
+Enter `Peacock` in the billing CSV’s `service` column. Use the actual charge and currency. For a US dollar charge, `amountMinor` is the total in cents. Use explicit `start,end` dates when the receipt gives a coverage period, or `date,cycle` when the charge starts a known monthly or annual cycle. Include a distinct `id` for separate charges on the same day.
+
+For viewing history, import a strmr CSV with `service,date,title` columns. Use `Peacock` for the service and YYYY-MM-DD for the date. Optional `lastPlayedAt` (YYYY-MM-DDTHH:mm:ss), `series` and `season` preserve playback details when available. Repeat imports skip identical entries. Viewing rows appear in the dashboard even when corresponding bills are missing.
+
+## Paramount+ account history
+
+Start with a completed charge from Paramount+ or the provider that billed the subscription. Use `Paramount+` in the CSV’s `service` column. Include the amount paid and the covered dates, or the charge date and billing cycle when the receipt gives them. [Paramount+ account](https://www.paramountplus.com/account/)
+
+For a confirmed monthly plan paid through PayPal, select **Paramount+ monthly via PayPal (USD)** in the import dialog and paste the month headings, merchant, outgoing amounts and payment dates. The CLI accepts the same text via `node scripts/ledger.mjs import - data/history.yml --paypal-monthly`. Include month and year headings when available. If a relative heading cannot be dated from an adjacent month, replace it with its actual month and year. The importer projects one monthly cycle per payment and preserves gaps between cycles.
+
+To request viewing history, ask for the titles, episodes and playback timestamps across your Paramount+ profiles in a machine-readable format. You can also request subscription periods and billing transactions. Dated viewing rows can be imported with `service,date,title` and optional `lastPlayedAt`. [Paramount privacy access request](https://privacy.paramount.com/consumer)
 
 ## Price per view
 
-In **Viewing**, select **Month** for each month of the selected year, **Year** for the year total, or **All time** for all recorded years. Each row divides the service’s cost by its imported viewing entries during priced coverage. Charges with a known amount and end date are allocated evenly across their covered days through today. A billing period that crosses a month or year boundary contributes proportionally to each side. Each currency has its own row. A dash means there were no recorded views during that priced coverage.
+The summary cards show total cost, average monthly spend, views, and cost per view for the selected window. Total cost sums recorded payments in each currency. Cost per view divides the total allocated cost in each currency by the number of distinct viewing entries covered by a bill in that currency. A view covered by both a bundle and a direct subscription counts once in that total.
+
+Hover or focus a month on the timeline or in viewing history to see its recorded spend. Each bill counts once in its charge month, using the coverage start if the charge date is missing. **Average monthly spend** divides recorded payments by every calendar month in the selected window, including the current partial month. The sparkline shows those monthly totals in order. Months without payments contribute zero recorded spend. Missing bills can lower the average. Each currency has its own average and trend.
+
+If coverage ended early, set `lastCoveredOn` to the final covered date.
+
+In **Viewing**, **Total** shows price per view for the selected period. Choose **Month** to break the same period down by calendar month. Each row divides the service’s cost by its imported viewing entries during priced coverage. Charges with a known amount and end date are allocated evenly across their covered days through today. A billing period that crosses a month or year boundary contributes proportionally to each side. Each currency has its own row. A dash means there were no recorded views during that priced coverage.
+
+Open **Which views count?** below the table to see how many views each service contributed to the calculation.
 
 
 ## Inactivity
 
-The timeline lists stretches of 30, 60 or 90 consecutive covered days with no imported views. Streaks start no earlier than the service’s first imported viewing day. Active days from adjacent bills and bundles are combined, and a lapse in coverage breaks the streak. A viewing day resets the count. The selected year shows full streaks that intersect it, through today. The coverage filter also applies to inactivity.
+The timeline lists stretches of 30, 60 or 90 consecutive covered days with no imported views. Streaks start no earlier than the service’s first imported viewing day. Active days from adjacent bills and bundles are combined, and a lapse in coverage breaks the streak. A viewing day resets the count. Only idle days inside the selected period count toward the minimum streak length. The coverage filter also applies to inactivity.
 
-The result depends on which profiles and dates your viewing exports cover. Services without viewing data are listed separately. The daily inspector counts all viewing entries on the selected date; its cost breakdown uses only views during priced coverage and keeps bundle charges together.
+The result depends on which profiles and dates your viewing exports cover. Services without viewing data are listed separately. The period summary counts all imported views in the window. Its cost breakdown counts views during priced coverage and keeps bundle charges together.
+
+## Provider logos
+
+The dashboard ships local copies of the provider artwork. Wikimedia Commons lists these files as public-domain logos and identifies the providers' trademark interests on the individual file pages.
+
+- [Crunchyroll](https://commons.wikimedia.org/wiki/File:Crunchyroll_2024_stacked.svg)
+- [Netflix](https://commons.wikimedia.org/wiki/File:Netflix_2016_N_logo.svg)
+- [Hulu](https://commons.wikimedia.org/wiki/File:Hulu_logo_%282018%29.svg)
+- [Disney+](https://commons.wikimedia.org/wiki/File:Disney%2B_logo.svg)
+- [ESPN (used for ESPN Select)](https://commons.wikimedia.org/wiki/File:ESPN_wordmark.svg)
+- [HBO Max](https://commons.wikimedia.org/wiki/File:HBO_Max_%282025%29.svg)
+- [Peacock](https://commons.wikimedia.org/wiki/File:NBCUniversal_Peacock_Logo_%282026%29.svg)
+- [Apple TV](https://commons.wikimedia.org/wiki/File:Apple_TV_logo.svg)
+- [Apple TV+](https://commons.wikimedia.org/wiki/File:Apple_TV_Plus_Logo.svg)
+- [Paramount+](https://commons.wikimedia.org/wiki/File:Paramount%2B_logo.svg)
